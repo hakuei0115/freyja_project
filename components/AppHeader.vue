@@ -1,10 +1,12 @@
 <script setup>
 const route = useRoute();
+const auth = useCookie('auth');
+const accountStore = useAccountStore();
+const { accountInfo } = storeToRefs(accountStore);
+
 const transparentBgRoute = ['index', 'rooms'];
 
 const isTransparentRoute = computed(() => transparentBgRoute.includes(route.name));
-
-const auth = useCookie('auth');
 
 const isScrolled = ref(false);
 
@@ -19,6 +21,21 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
 })
+
+const logout = async () => {
+  const { $swal } = useNuxtApp();
+  const auth = useCookie('auth');
+  auth.value = null;
+
+  $swal.fire({
+    position: 'center',
+    icon: 'success',
+    title: '登出成功',
+    text: '期待您的再次光臨！',
+    showConfirmButton: false,
+    timer: 1500
+  });
+}
 
 </script>
 

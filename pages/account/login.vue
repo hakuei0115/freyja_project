@@ -1,6 +1,7 @@
 <script setup>
 const router = useRouter();
 const { $swal } = useNuxtApp();
+const accountStore = useAccountStore();
 
 definePageMeta({
   layout: 'account'
@@ -46,6 +47,7 @@ const login = async (userLoginObject) => {
 
     const auth = useCookie("auth", { maxAge:600 })
     auth.value = data.value.token;
+    accountStore.setAccountInfo(data.value.result);
 
     router.push("/");
   }

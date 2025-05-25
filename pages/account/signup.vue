@@ -6,6 +6,36 @@ definePageMeta({
   layout: 'account'
 });
 
+const agreementCheck = ref(null);
+const isEmailAndPasswordValid = ref(false);
+
+const birthDay = ref('');
+const birthYear = ref('');
+const birthMonth = ref('');
+
+const city = ref('');
+const district = ref('');
+const detailAddress = ref('');
+
+const zipcode = [
+  {label: '新興區', value: '800'},
+  {label: '前金區', value: '801'},
+  {label: '鹽埕區', value: '802'},
+]
+
+watch([birthDay, birthYear, birthMonth], ([day, year, month]) => {
+  if (day && year && month) {
+    userRegisterObject.birthday = `${year}/${month}/${day}`;
+  }
+}, { immediate: true });
+
+watch([city, district, detailAddress], ([cityValue, districtValue, detailValue]) => {
+  if (cityValue && districtValue && detailValue) {
+    userRegisterObject.address.zipcode = zipcode.find(z => z.label === districtValue)?.value || "";
+    userRegisterObject.address.detail = `${cityValue} ${districtValue} ${detailValue}`;
+  }
+}, { immediate: true });
+
 const userRegisterObject = reactive({
   name: "",
   email: "",
@@ -18,10 +48,7 @@ const userRegisterObject = reactive({
   },
 });
 
-const isEmailAndPasswordValid = ref(false);
-
 const toStep2 = (value = {}) => {
-  console.log("wtg");
   if (value['密碼'] !== value['確認密碼']) {
     $swal.fire({
       position: "center",
@@ -36,6 +63,18 @@ const toStep2 = (value = {}) => {
 };
 
 const register = async (userRegisterObject) => {
+  if (!agreementCheck.value) {
+    $swal.fire({
+      position: "center",
+      icon: "error",
+      title: "請同意個資使用規範",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    return;
+  }
+
+  console.log("userRegisterObject", userRegisterObject);
   const { data, error } = await useFetch(
     "https://nuxr3.zeabur.app/api/v1/user/signup",
     {
@@ -217,6 +256,7 @@ useHead({
       <form
         :class="{'d-none': !isEmailAndPasswordValid}"
         class="mb-4"
+        @submit.prevent="register(userRegisterObject)"
       >
         <div class="mb-4 fs-8 fs-md-7">
           <label
@@ -245,7 +285,7 @@ useHead({
             id="phone"
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40  rounded-3"
             placeholder="請輸入手機號碼"
-            type="number"
+            type="tel"
             pattern="[0-9]{10}"
             max="10"
             v-model="userRegisterObject.phone"
@@ -265,35 +305,38 @@ useHead({
             <select
               id="birth"
               class="form-select p-4 text-neutral-80 fw-medium rounded-3"
+              v-model="birthYear"
             >
               <option
                 v-for="year in 65"
                 :key="year"
-                value="`${year + 1958} 年`"
+                :value="year + 1958"
               >
-                {{ year + 1958 }} 年
+                {{ year + 1958 }}
               </option>
             </select>
             <select
               class="form-select p-4 text-neutral-80 fw-medium rounded-3"
+              v-model="birthMonth"
             >
               <option
                 v-for="month in 12"
                 :key="month"
-                value="`${month} 月`"
+                :value="String(month).padStart(2, '0')"
               >
-                {{ month }} 月
+                {{ month }}
               </option>
             </select>
             <select
               class="form-select p-4 text-neutral-80 fw-medium rounded-3"
+              v-model="birthDay"
             >
               <option
                 v-for="day in 30"
                 :key="day"
-                value="`${day} 日`"
+                :value="String(day).padStart(2, '0')"
               >
-                {{ day }} 日
+                {{ day }}
               </option>
             </select>
           </div>
@@ -311,6 +354,7 @@ useHead({
             >
               <select
                 class="form-select p-4 text-neutral-80 fw-medium rounded-3"
+                v-model="city"
               >
                 <option value="臺北市">
                   臺北市
@@ -327,6 +371,7 @@ useHead({
               </select>
               <select
                 class="form-select p-4 text-neutral-80 fw-medium rounded-3"
+                v-model="district"
               >
                 <option value="前金區">
                   前金區
@@ -347,6 +392,7 @@ useHead({
               type="text"
               class="form-control p-4 rounded-3"
               placeholder="請輸入詳細地址"
+              v-model="detailAddress"
             >
           </div>
         </div>
@@ -357,6 +403,8 @@ useHead({
             class="form-check-input"
             type="checkbox"
             value=""
+            v-model="agreementCheck"
+            required
           >
           <label
             class="form-check-label fw-bold"
@@ -367,10 +415,19 @@ useHead({
         </div>
         <button
           class="btn btn-primary-100 w-100 py-4 text-neutral-0 fw-bold"
-          type="button"
+          type="submit"
         >
           完成註冊
         </button>
+        <div class="col-12 col-md-6">
+          <button
+            class="btn btn-neutral-40 w-100 py-4 text-neutral-60 fw-bold mt-4"
+            type="button"
+            @click="isEmailAndPasswordValid = false"
+          >
+            上一步
+          </button>
+        </div>
       </form>
     </div>
 
