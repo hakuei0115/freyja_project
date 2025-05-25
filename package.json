@@ -10,9 +10,27 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify/vue": "^5.0.0",
+    "@pinia/nuxt": "^0.11.0",
+    "@popperjs/core": "^2.11.8",
+    "@vee-validate/i18n": "^4.14.7",
+    "@vee-validate/nuxt": "^4.14.7",
+    "@vee-validate/rules": "^4.14.7",
+    "@vee-validate/yup": "^4.15.0",
+    "@vee-validate/zod": "^4.15.0",
+    "bootstrap": "^5.3.3",
+    "dayjs": "^1.11.13",
     "nuxt": "^3.17.4",
     "pinia": "^3.0.2",
-    "vue": "^3.5.14",
-    "vue-router": "^4.5.1"
+    "pinia-plugin-persistedstate": "^4.1.0",
+    "sass": "^1.89.0",
+    "scss": "^0.2.4",
+    "sweetalert2": "^11.15.1",
+    "swiper": "^11.1.14",
+    "v-calendar": "^3.1.2",
+    "vue": "latest",
+    "vue-router": "latest",
+    "vue-screen-utils": "^1.0.0-beta.13",
+    "yup": "^1.2.0"
   }
 }
