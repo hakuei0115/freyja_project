@@ -1,5 +1,4 @@
 <script setup>
-import { Icon } from '@iconify/vue';
 </script>
 
 <template>
@@ -56,17 +55,17 @@ import { Icon } from '@iconify/vue';
               MAIL
               <a
                 class="d-block mt-2 text-neutral-40 fs-8 fs-md-7 fw-normal text-decoration-none"
-                href="mailto:elh@hexschool.com"
-              >elh@hexschool.com</a>
+                href="mailto:test@gmail.com"
+              >test@gmail.com</a>
             </p>
 
             <p class="mb-0 fw-bold text-neutral-0">
               WEB
               <a
                 class="d-block mt-2 text-neutral-40 fs-8 fs-md-7 fw-normal text-decoration-none"
-                href="https://www.elhhexschool.com.tw/"
+                href="https://hakueiweb.site/"
                 target="_blank"
-              >www.elhhexschool.com.tw</a>
+              >hakueiweb.site</a>
             </p>
           </address>
         </div>
@@ -76,7 +75,7 @@ import { Icon } from '@iconify/vue';
           806023 台灣高雄市新興區六角路123號
         </address>
         <p class="mb-0">
-          © 享樂酒店 2023 All Rights Reserved.
+          © 享樂酒店 2025 All Rights Reserved.
         </p>
       </div>
     </div>
