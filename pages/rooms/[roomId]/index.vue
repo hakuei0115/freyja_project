@@ -51,6 +51,7 @@ const handleDateChange = (bookingInfo) => {
 </script>
 
 <template>
+  
   <main class="mt-18 mt-md-30 bg-neutral-100">
     <section class="p-md-20 bg-primary-10">
       <div class="d-none d-md-block position-relative">
@@ -58,8 +59,8 @@ const handleDateChange = (bookingInfo) => {
           <div style="width: 52.5vw">
             <img
               class="w-100"
-              :src="roomDetail.imageUrl"
-              :alt="roomDetail.name"
+              :src="roomDetail?.imageUrl"
+              :alt="roomDetail?.name"
             />
           </div>
           <div class="d-flex flex-wrap gap-md-2" style="width: 42.5vw">
@@ -68,7 +69,16 @@ const handleDateChange = (bookingInfo) => {
               v-for="num in 2"
               :key="num"
             >
-              
+              <img
+                class="w-50"
+                :src="roomDetail?.imageUrlList[num]"
+                :alt="`room-${num}`"
+              >
+              <img
+                class="w-50"
+                :src="roomDetail?.imageUrlList[num + 1]"
+                :alt="`room-${num + 1}`"
+              >
             </div>
           </div>
         </div>
@@ -76,8 +86,8 @@ const handleDateChange = (bookingInfo) => {
       <div class="d-md-none position-relative">
         <img
           class="img-fluid"
-          :src="roomDetail.imageUrl"
-          :alt="roomDetail.name"
+          :src="roomDetail?.imageUrl"
+          :alt="roomDetail?.name"
         />
       </div>
     </section>
@@ -87,7 +97,7 @@ const handleDateChange = (bookingInfo) => {
         <div class="row">
           <div class="col-12 col-md-7 d-flex flex-column gap-6 gap-md-20">
             <div>
-              <h1 class="mb-4 text-neutral-100 fw-bold">尊爵雙人房</h1>
+              <h1 class="mb-4 text-neutral-100 fw-bold">{{ roomDetail?.name }}</h1>
               <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-medium">
                 享受高級的住宿體驗，尊爵雙人房提供給您舒適寬敞的空間和精緻的裝潢。
               </p>
