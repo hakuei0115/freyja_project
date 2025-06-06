@@ -1,5 +1,6 @@
 <script setup>
 import DatePickerModal from "@/components/rooms/DatePickerModal.vue";
+const { $swal } = useNuxtApp()
 
 const route = useRoute();
 const id = route.params.roomId;
