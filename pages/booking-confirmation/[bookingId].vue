@@ -8,7 +8,7 @@ const { bookingId } = route.params;
 const auth = useCookie('auth')
 
 const accountStore = useAccountStore();
-const { accountInfo } = storeToRefs(accountStore);
+const { accountInfo, isVip } = storeToRefs(accountStore);
 
 const { data: orderData, pending, error } = await useAsyncData(
     `order-detail-${bookingId}`,
@@ -133,9 +133,30 @@ const daysCount = computed(() => {
                                 </p>
                             </div>
 
-                            <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
-                                NT$ <span v-currency="roomInfo?.price * daysCount"></span>
-                            </p>
+                            <template v-if="isVip">
+                                <p class="text-primary-100 fs-8 fs-md-7 fw-bold mb-0">
+                                    VIP折扣
+                                </p>
+                                <p class="text-primary-100 fs-8 fs-md-7 fw-bold mb-0">
+                                    -10%
+                                </p>
+                                <template v-if="daysCount >= 7">
+                                    <p class="text-primary-100 fs-8 fs-md-7 fw-bold mb-0">
+                                        VIP訂房滿7天折扣
+                                    </p>
+                                    <p class="text-primary-100 fs-8 fs-md-7 fw-bold mb-0">
+                                        -10%
+                                    </p>
+                                </template>
+                                <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
+                                    NT$ <span v-currency="roomInfo?.price * daysCount * 0.9 * (daysCount >= 7 ? 0.9 : 1)"></span>
+                                </p>
+                            </template>
+                            <template v-else>
+                                <p class="text-neutral-80 fs-8 fs-md-7 fw-bold mb-0">
+                                    NT$ <span v-currency="roomInfo?.price * daysCount"></span>
+                                </p>
+                            </template>
                         </section>
 
                         <hr class="my-0 opacity-100 text-neutral-40">

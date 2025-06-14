@@ -1,7 +1,4 @@
 <script setup>
-import { ref } from 'vue';
-import { Icon } from '@iconify/vue';
-
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 
@@ -21,8 +18,19 @@ const slidePrev = () => {
 const slideNext = () => {
   roomSwiper.value.$el.swiper.slideNext();
 }
+const accountStore = useAccountStore();
 
+onMounted(() => {
+  const vipUserStr = localStorage.getItem('vipUser');
+  const vipUser = vipUserStr ? JSON.parse(vipUserStr) : null;
 
+  if (vipUser?.id && vipUser.id !== accountStore.accountInfo._id) {
+    localStorage.removeItem('isVIP');
+    accountStore.changeVipStatus(false);
+  } else {
+    accountStore.changeVipStatus(true);
+  }
+});
 </script>
 
 <template>

@@ -6,6 +6,8 @@ definePageMeta({
 });
 
 const { $swal } = useNuxtApp();
+const accountStore = useAccountStore();
+const { isVip } = storeToRefs(accountStore);
 const booking = useBookingStore();
 const { bookingResult } = storeToRefs(booking);
 const roomId = computed(() => bookingResult.value.roomId);
@@ -338,23 +340,47 @@ const roomDetail = computed(() => roomData.value?.result || null)
                                         NT$ {{ roomDetail.price * bookingResult?.daysCount }}
                                     </span>
                                 </div>
-                                <!-- <div class="d-flex justify-content-between align-items-center fw-medium">
-                                    <p class="d-flex align-items-center mb-0 text-neutral-100">
-                                        住宿折扣
-                                    </p>
-                                    <span class="text-primary-100">
-                                        -NT$ 1,000
-                                    </span>
-                                </div> -->
-                                <hr class="my-6 opacity-100 text-neutral-40">
-                                <div class="d-flex justify-content-between align-items-center text-neutral-100 fw-bold">
-                                    <p class="d-flex align-items-center mb-0">
-                                        總價
-                                    </p>
-                                    <span>
-                                        NT$ {{ roomDetail.price * bookingResult?.daysCount - 1000 }}
-                                    </span>
-                                </div>
+
+                                <template v-if="isVip">
+                                    <div class="d-flex justify-content-between align-items-center fw-medium">
+                                        <p class="d-flex align-items-center mb-0 text-neutral-100">
+                                            VIP折扣
+                                        </p>
+                                        <span class="text-primary-100">
+                                            -10%
+                                        </span>
+                                    </div>
+
+                                    <template v-if="bookingResult?.daysCount >= 7">
+                                        <div class="d-flex justify-content-between align-items-center fw-medium">
+                                            <p class="d-flex align-items-center mb-0 text-neutral-100">
+                                                VIP訂房滿7天折扣
+                                            </p>
+                                            <span class="text-primary-100">
+                                                -10%
+                                            </span>
+                                        </div>
+                                    </template>
+                                    <hr class="my-6 opacity-100 text-neutral-40">
+                                    <div class="d-flex justify-content-between align-items-center text-neutral-100 fw-bold">
+                                        <p class="d-flex align-items-center mb-0">
+                                            總價
+                                        </p>
+                                        <span>
+                                            NT$ {{ roomDetail.price * bookingResult?.daysCount * 0.9 * (bookingResult?.daysCount >= 7 ? 0.9 : 1) }}
+                                        </span>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div class="d-flex justify-content-between align-items-center text-neutral-100 fw-bold">
+                                        <p class="d-flex align-items-center mb-0">
+                                            總價
+                                        </p>
+                                        <span>
+                                            NT$ {{ roomDetail.price * bookingResult?.daysCount }}
+                                        </span>
+                                    </div>
+                                </template>
                             </div>
 
                             <button class="btn btn-primary-100 py-4 text-neutral-0 fw-bold rounded-3" type="button"

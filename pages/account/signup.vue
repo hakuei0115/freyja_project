@@ -1,6 +1,7 @@
 <script setup>
 const router = useRouter();
 const { $swal } = useNuxtApp();
+const accountStore = useAccountStore();
 
 definePageMeta({
   layout: 'account'
@@ -106,6 +107,37 @@ const register = async (userRegisterObject) => {
       showConfirmButton: false,
       timer: 1500,
     });
+
+    if (data.value) {
+      $swal.fire({
+        position: 'center',
+        icon: 'info',
+        title: '是否要升級為 VIP？',
+        text: 'VIP 可享有以下特權：\n・專屬折扣\n・優先預約\n・免費升等房型',
+        showCancelButton: true,
+        confirmButtonText: '升級 VIP',
+        cancelButtonText: '稍後再說',
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          accountStore.setVipInfo(
+            {
+              id: data.value.result.id,
+              name: userRegisterObject.name,
+              email: userRegisterObject.email,
+            }
+          );
+
+          const buyVip = useCookie("buyVip", { maxAge:600 })
+          buyVip.value = 'buybuybuy';
+          
+          router.push('/account/vip');
+        } else {
+          router.push('/account/login');
+        }
+      });
+    }
+
     router.push("/account/login");
   }
 }

@@ -4,6 +4,9 @@ definePageMeta({
     layout: 'user'
 });
 
+const accountStore = useAccountStore();
+const { isVip } = storeToRefs(accountStore);
+
 import dayjs from 'dayjs';
 const { $swal, $showModal } = useNuxtApp();
 const cancelModal = ref(null);
@@ -131,10 +134,18 @@ useSeoMeta({
                                     </p>
                                 </div>
 
-                                <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
-                                    NT$ <span
-                                        v-currency="newOrder?.roomId?.price * daysCount(newOrder?.checkInDate, newOrder?.checkOutDate)"></span>
-                                </p>
+                                <template v-if="isVip">
+                                    <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
+                                        NT$ <span
+                                            v-currency="newOrder?.roomId?.price * daysCount(newOrder?.checkInDate, newOrder?.checkOutDate) * 0.9 * (daysCount(newOrder?.checkInDate, newOrder?.checkOutDate) >= 7 ? 0.9 : 1)"></span>
+                                    </p>
+                                </template>
+                                <template v-else>
+                                    <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
+                                        NT$ <span
+                                            v-currency="newOrder?.roomId?.price * daysCount(newOrder?.checkInDate, newOrder?.checkOutDate)"></span>
+                                    </p>
+                                </template>
                             </section>
 
                             <hr class="my-0 opacity-100 text-neutral-40">
@@ -233,10 +244,18 @@ useSeoMeta({
                                             退房：{{ order?.checkOutDate && dayjs(order?.checkOutDate).format('MM 月 DD 日 dddd') }}，12:00 前退房
                                         </p>
                                     </div>
-                                    <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
-                                        NT$ <span
-                                            v-currency="order?.roomId?.price * daysCount(order?.checkInDate, order?.checkOutDate)"></span>
-                                    </p>
+                                    <template v-if="isVip">
+                                        <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
+                                            NT$ <span
+                                                v-currency="newOrder?.roomId?.price * daysCount(newOrder?.checkInDate, newOrder?.checkOutDate) * 0.9 * (daysCount(newOrder?.checkInDate, newOrder?.checkOutDate) >= 7 ? 0.9 : 1)"></span>
+                                        </p>
+                                    </template>
+                                    <template v-else>
+                                        <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
+                                            NT$ <span
+                                                v-currency="newOrder?.roomId?.price * daysCount(newOrder?.checkInDate, newOrder?.checkOutDate)"></span>
+                                        </p>
+                                    </template>
                                 </section>
                             </div>
                             <hr class="my-0 opacity-100 text-neutral-40">

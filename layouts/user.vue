@@ -1,6 +1,6 @@
 <script setup>
 const accountStore = useAccountStore();
-const { accountInfo } = storeToRefs(accountStore);
+const { accountInfo, isVip } = storeToRefs(accountStore);
 </script>
 
 <template>
@@ -27,9 +27,16 @@ const { accountInfo } = storeToRefs(accountStore);
                             src="@/assets/images/avatar-6.png"
                             alt="avatar"
                         >
-                        <h1 class="text-neutral-0 fw-bold">
-                            Hello，{{ accountInfo?.name }}
-                        </h1>
+                        <template v-if="isVip">
+                            <h1 class="text-neutral-0 fw-bold">
+                                Hello 「 {{ accountInfo?.name }} 」尊貴至上的 VIP 會員
+                            </h1>
+                        </template>
+                        <template v-else>
+                            <h1 class="text-neutral-0 fw-bold">
+                                Hello 「 {{ accountInfo?.name }} 」 歡迎回來
+                            </h1>
+                        </template>
                     </div>
                 </div>
             </section>
